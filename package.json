@@ -1,0 +1,51 @@
+{
+  "name": "gaia-core",
+  "version": "0.0.1",
+  "description": "A modern TypeScript-first FiveM framework (client + server) built with Bun and esbuild.",
+  "license": "LGPL-3.0-or-later",
+  "type": "module",
+  "private": true,
+  "author": "Gaia Project",
+  "module": "index.ts",
+  "scripts": {
+    "build": "bun run build.ts",
+    "dev": "bun run build.ts --watch",
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "clean": "rm -rf dist",
+    "check": "bun run typecheck && bun run lint && bun run format:check"
+  },
+  "devDependencies": {
+    "@citizenfx/client": "^2.0.25988-1",
+    "@citizenfx/server": "^2.0.25988-1",
+    "@eslint/js": "^10.0.1",
+    "@types/bun": "latest",
+    "@types/node": "^25.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.53.0",
+    "@typescript-eslint/parser": "^8.53.0",
+    "esbuild": "^0.27.3",
+    "eslint": "^10.0.1",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.0"
+  },
+  "dependencies": {
+    "@nativewrappers/fivem": "^0.0.144",
+    "@nativewrappers/server": "^0.0.144",
+    "mariadb": "^3.4.5"
+  },
+  "engines": {
+    "node": ">=22.9.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Gaiaa-Project/gaia_core_roleplay.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Gaiaa-Project/gaia_core_roleplay/issues"
+  }
+}
