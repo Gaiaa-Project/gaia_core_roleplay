@@ -15,3 +15,4 @@ client_scripts {
 server_scripts {
   'dist/server.js'
 }
+

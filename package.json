@@ -16,7 +16,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "clean": "rm -rf dist",
-    "check": "bun run typecheck && bun run lint && bun run format:check"
+    "check": "bun run format && bun run typecheck && bun run lint"
   },
   "devDependencies": {
     "@citizenfx/client": "^2.0.25988-1",

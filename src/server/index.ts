@@ -18,6 +18,7 @@ import {
   UnregisterServerCallback,
   IsServerCallbackRegistered,
 } from './lib/callback/main';
+import { RunMigration } from './modules/migration/main';
 
 exports('Query', Query);
 exports('Execute', Execute);
@@ -44,6 +45,13 @@ on('onServerResourceStart', async (resourceName: string) => {
     console.log(`[${RESOURCE_NAME}] Database connected`);
   } catch (err) {
     console.error(`[${RESOURCE_NAME}] Database connection failed:`, err);
+    return;
+  }
+
+  try {
+    await RunMigration();
+  } catch (err) {
+    console.error(`[${RESOURCE_NAME}] Migration failed:`, err);
   }
 
   console.log(`[${RESOURCE_NAME}] Server started`);

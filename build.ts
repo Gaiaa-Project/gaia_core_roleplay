@@ -104,6 +104,7 @@ client_scripts {
 server_scripts {
   '${serverFile}'
 }
+
 ${deps}`;
 
   await writeFile('fxmanifest.lua', content, 'utf8');
