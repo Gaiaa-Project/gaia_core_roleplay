@@ -19,6 +19,9 @@ import {
   IsServerCallbackRegistered,
 } from './lib/callback/main';
 import { RunMigration } from './modules/migration/main';
+import { Print } from '@/shared/lib/print/main';
+
+const log = Print.create('Core');
 
 exports('Query', Query);
 exports('Execute', Execute);
@@ -37,6 +40,13 @@ exports('RegisterServerCallback', RegisterServerCallback);
 exports('UnregisterServerCallback', UnregisterServerCallback);
 exports('IsServerCallbackRegistered', IsServerCallbackRegistered);
 
+exports('CreatePrint', Print.create);
+exports('PrintSuccess', Print.success);
+exports('PrintInfo', Print.info);
+exports('PrintWarn', Print.warn);
+exports('PrintError', Print.error);
+exports('PrintDebug', Print.debug);
+
 on('onServerResourceStart', async (resourceName: string) => {
   if (resourceName !== RESOURCE_NAME) return;
 
@@ -49,8 +59,8 @@ on('onServerResourceStart', async (resourceName: string) => {
   try {
     await RunMigration();
   } catch {
-    process.stderr.write(`[${RESOURCE_NAME}] Migration failed\n`);
+    log.error('Migration failed');
   }
 
-  process.stdout.write(`[${RESOURCE_NAME}] Server started\n`);
+  log.success('Server started');
 });

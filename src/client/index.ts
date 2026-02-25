@@ -1,4 +1,5 @@
 import { RESOURCE_NAME } from '@/shared/index';
+import { Print } from '@/shared/lib/print/main';
 import {
   TriggerServerCallback,
   RegisterClientCallback,
@@ -18,7 +19,16 @@ exports('waitForPlayer', waitForPlayer);
 exports('waitForModel', waitForModel);
 exports('waitForAnimDict', waitForAnimDict);
 
+exports('CreatePrint', Print.create);
+exports('PrintSuccess', Print.success);
+exports('PrintInfo', Print.info);
+exports('PrintWarn', Print.warn);
+exports('PrintError', Print.error);
+exports('PrintDebug', Print.debug);
+
+const log = Print.create('Core');
+
 on('onClientResourceStart', (resourceName: string) => {
   if (resourceName !== RESOURCE_NAME) return;
-  console.log(`[${RESOURCE_NAME}] Client started`);
+  log.success('Client started');
 });

@@ -1,4 +1,4 @@
-import type { MigrationConfig } from '@/server/modules/migration/types';
+iimport type { MigrationConfig } from '@/server/modules/migration/types';
 
 export const migrationConfig: MigrationConfig = {
   // Enables or disables automatic SQL migration on server start

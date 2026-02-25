@@ -1,5 +1,5 @@
-import { RESOURCE_NAME } from '@/shared/index';
 import { migrationConfig } from '@/shared/config/migration_config';
+import { Print } from '@/shared/lib/print/main';
 import { Execute, Scalar } from '../db/main';
 import { getDatabaseName, getMatchingTables, inspectSchema } from './inspector';
 import {
@@ -7,17 +7,10 @@ import {
   generateAddColumnSQL,
   generateAddForeignKeySQL,
 } from './sql_generator';
+import { RESOURCE_NAME } from '@/shared/index';
 
-const TAG = `[${RESOURCE_NAME}] Migration`;
+const log = Print.create('Migration');
 const MIGRATIONS_TABLE = 'schema_migrations';
-
-function log(msg: string): void {
-  process.stdout.write(`${TAG}: ${msg}\n`);
-}
-
-function logError(msg: string): void {
-  process.stderr.write(`${TAG}: ${msg}\n`);
-}
 
 async function ensureMigrationsTable(): Promise<void> {
   await Execute(
@@ -49,23 +42,23 @@ export async function RunMigration(): Promise<void> {
   const { schema } = migrationConfig;
 
   if (!migrationConfig.enabled) {
-    log('Auto-migration disabled');
+    log.warn('Auto-migration disabled');
     return;
   }
 
-  log('Auto-migration enabled');
+  log.info('Auto-migration enabled');
 
   if (schema.tables.length === 0) {
-    log('No tables defined in schema — skipping');
+    log.warn('No tables defined in schema — skipping');
     return;
   }
 
   let database: string;
   try {
     database = await getDatabaseName();
-    log(`Database found — ${database}`);
+    log.success(`Database found — ${database}`);
   } catch {
-    logError('Database not found — unable to determine database name');
+    log.error('Database not found — unable to determine database name');
     return;
   }
 
@@ -73,23 +66,23 @@ export async function RunMigration(): Promise<void> {
 
   const matchingTables = await getMatchingTables(database, schema.tables);
   if (matchingTables.length > 0) {
-    log(`${matchingTables.length} table(s) found — ${matchingTables.join(', ')}`);
+    log.info(`${matchingTables.length} table(s) found — ${matchingTables.join(', ')}`);
   } else {
-    log('No existing tables found');
+    log.info('No existing tables found');
   }
 
   const latestVersion = await getLatestVersion();
   const isNewVersion = latestVersion !== schema.version;
 
   if (!isNewVersion) {
-    log(`Version ${schema.version} already applied`);
+    log.info(`Version ${schema.version} already applied`);
 
     if (!migrationConfig.detectMissing) {
-      log('Repair disabled — skipping verification');
+      log.warn('Repair disabled — skipping verification');
       return;
     }
 
-    log('Repair enabled — checking tables and columns...');
+    log.info('Repair enabled — checking tables and columns...');
     const missing = await inspectSchema(database, schema.tables);
     const totalMissing =
       missing.tables.length +
@@ -97,68 +90,64 @@ export async function RunMigration(): Promise<void> {
       missing.foreignKeys.reduce((sum, f) => sum + f.foreignKeys.length, 0);
 
     if (totalMissing === 0) {
-      log('All tables and columns OK — nothing to repair');
+      log.success('All tables and columns OK — nothing to repair');
       return;
     }
 
-    log(`${totalMissing} missing element(s) detected — repairing...`);
-    let repaired = 0;
+    log.warn(`${totalMissing} missing element(s) detected — repairing...`);
 
     for (const table of missing.tables) {
       await Execute(generateCreateTableSQL(table));
-      log(`Repaired: created table \`${table.name}\``);
-      repaired++;
+      log.success(`Repaired: created table \`${table.name}\``);
     }
 
     for (const { tableName, columns } of missing.columns) {
       for (const col of columns) {
         await Execute(generateAddColumnSQL(tableName, col));
-        log(`Repaired: added column \`${col.name}\` to \`${tableName}\``);
-        repaired++;
+        log.success(`Repaired: added column \`${col.name}\` to \`${tableName}\``);
       }
     }
 
     for (const { tableName, foreignKeys } of missing.foreignKeys) {
       for (const fk of foreignKeys) {
         await Execute(generateAddForeignKeySQL(tableName, fk));
-        log(`Repaired: added foreign key \`${fk.column}\` on \`${tableName}\``);
-        repaired++;
+        log.success(`Repaired: added foreign key \`${fk.column}\` on \`${tableName}\``);
       }
     }
 
-    log(`Repair complete — ${repaired} element(s) repaired`);
+    log.success(`Repair complete — ${totalMissing} element(s) repaired`);
     return;
   }
 
-  log(
+  log.info(
     `New version detected: ${schema.version}${latestVersion ? ` (current: ${latestVersion})` : ' (first migration)'}`,
   );
-  log('Starting migration...');
+  log.info('Starting migration...');
 
   const missing = await inspectSchema(database, schema.tables);
 
   for (const table of missing.tables) {
-    log(`Migrating table \`${table.name}\`...`);
+    log.info(`Migrating table \`${table.name}\`...`);
     await Execute(generateCreateTableSQL(table));
-    log(`Table \`${table.name}\` — done`);
+    log.success(`Table \`${table.name}\` — done`);
   }
 
   for (const { tableName, columns } of missing.columns) {
     for (const col of columns) {
-      log(`Adding column \`${col.name}\` to \`${tableName}\`...`);
+      log.info(`Adding column \`${col.name}\` to \`${tableName}\`...`);
       await Execute(generateAddColumnSQL(tableName, col));
-      log(`Column \`${col.name}\` on \`${tableName}\` — done`);
+      log.success(`Column \`${col.name}\` on \`${tableName}\` — done`);
     }
   }
 
   for (const { tableName, foreignKeys } of missing.foreignKeys) {
     for (const fk of foreignKeys) {
-      log(`Adding foreign key \`${fk.column}\` on \`${tableName}\`...`);
+      log.info(`Adding foreign key \`${fk.column}\` on \`${tableName}\`...`);
       await Execute(generateAddForeignKeySQL(tableName, fk));
-      log(`Foreign key \`${fk.column}\` on \`${tableName}\` — done`);
+      log.success(`Foreign key \`${fk.column}\` on \`${tableName}\` — done`);
     }
   }
 
   await markVersionApplied(schema.version);
-  log(`Migration to version ${schema.version} complete`);
+  log.success(`Migration to version ${schema.version} complete`);
 }
