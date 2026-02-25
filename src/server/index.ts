@@ -42,17 +42,15 @@ on('onServerResourceStart', async (resourceName: string) => {
 
   try {
     await InitializeDatabase();
-    console.log(`[${RESOURCE_NAME}] Database connected`);
-  } catch (err) {
-    console.error(`[${RESOURCE_NAME}] Database connection failed:`, err);
+  } catch {
     return;
   }
 
   try {
     await RunMigration();
-  } catch (err) {
-    console.error(`[${RESOURCE_NAME}] Migration failed:`, err);
+  } catch {
+    process.stderr.write(`[${RESOURCE_NAME}] Migration failed\n`);
   }
 
-  console.log(`[${RESOURCE_NAME}] Server started`);
+  process.stdout.write(`[${RESOURCE_NAME}] Server started\n`);
 });

@@ -7,7 +7,7 @@ export interface MissingElements {
   foreignKeys: { tableName: string; foreignKeys: ForeignKeyDefinition[] }[];
 }
 
-async function getDatabaseName(): Promise<string> {
+export async function getDatabaseName(): Promise<string> {
   const name = await Scalar<string>('SELECT DATABASE()', []);
   if (!name) throw new Error('Unable to determine current database name');
   return name;
@@ -37,8 +37,18 @@ async function getExistingForeignKeys(database: string, tableName: string): Prom
   return rows.map((r) => r.CONSTRAINT_NAME);
 }
 
-export async function inspectSchema(tables: TableDefinition[]): Promise<MissingElements> {
-  const database = await getDatabaseName();
+export async function getMatchingTables(
+  database: string,
+  schemaTables: TableDefinition[],
+): Promise<string[]> {
+  const existingTables = await getExistingTables(database);
+  return schemaTables.map((t) => t.name).filter((name) => existingTables.includes(name));
+}
+
+export async function inspectSchema(
+  database: string,
+  tables: TableDefinition[],
+): Promise<MissingElements> {
   const existingTables = await getExistingTables(database);
 
   const missing: MissingElements = {

@@ -26,7 +26,11 @@ export const migrationConfig: MigrationConfig = {
           { name: 'license', type: 'VARCHAR(60)', notNull: true, unique: true },
           { name: 'discord_id', type: 'VARCHAR(30)', notNull: true, unique: true },
           { name: 'ip', type: 'VARCHAR(45)', notNull: true },
-          { name: 'last_seen', type: 'TIMESTAMP', default: 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP' },
+          {
+            name: 'last_seen',
+            type: 'TIMESTAMP',
+            default: 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+          },
           { name: 'created_at', type: 'TIMESTAMP', default: 'CURRENT_TIMESTAMP' },
         ],
         indexes: [
