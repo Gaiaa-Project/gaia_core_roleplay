@@ -19,6 +19,8 @@ import {
   IsServerCallbackRegistered,
 } from './lib/callback/main';
 import { RunMigration } from './modules/migration/main';
+import { GetIdentifiers } from './lib/player/identifiers';
+import { createCron, removeCron } from './lib/cron/main';
 import { Print } from '@/shared/lib/print/main';
 
 const log = Print.create('Core');
@@ -40,12 +42,10 @@ exports('RegisterServerCallback', RegisterServerCallback);
 exports('UnregisterServerCallback', UnregisterServerCallback);
 exports('IsServerCallbackRegistered', IsServerCallbackRegistered);
 
-exports('CreatePrint', Print.create);
-exports('PrintSuccess', Print.success);
-exports('PrintInfo', Print.info);
-exports('PrintWarn', Print.warn);
-exports('PrintError', Print.error);
-exports('PrintDebug', Print.debug);
+exports('GetIdentifiers', GetIdentifiers);
+
+exports('createCron', createCron);
+exports('removeCron', removeCron);
 
 on('onServerResourceStart', async (resourceName: string) => {
   if (resourceName !== RESOURCE_NAME) return;
