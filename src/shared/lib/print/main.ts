@@ -1,5 +1,6 @@
 import { RESOURCE_NAME } from '@/shared/index';
 import { formatArgs } from './format';
+import type { PrintInstance } from './types';
 
 const RESET = '\x1b[0m';
 const BOLD = '\x1b[1m';
@@ -51,14 +52,6 @@ function printMessage(level: LogLevel, module: string, args: unknown[]): void {
   } else {
     write(message);
   }
-}
-
-export interface PrintInstance {
-  success: (...args: unknown[]) => void;
-  info: (...args: unknown[]) => void;
-  warn: (...args: unknown[]) => void;
-  error: (...args: unknown[]) => void;
-  debug: (...args: unknown[]) => void;
 }
 
 function createPrint(module: string): PrintInstance {
