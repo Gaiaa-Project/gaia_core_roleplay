@@ -6,25 +6,43 @@ import {
   UnregisterClientCallback,
   IsClientCallbackRegistered,
 } from './lib/callback/main';
-import { wait, waitUntil, waitForPlayer, waitForModel, waitForAnimDict } from './lib/utils/wait';
+import { waitUntil, waitForPlayer } from './lib/utils/wait';
+import {
+  requestModel,
+  requestAnimDict,
+  requestAnimSet,
+  requestPtfxAsset,
+  requestTextureDict,
+  requestWeaponAsset,
+  requestScaleformMovie,
+} from './lib/streaming/request';
+import { raycastFromCoords, raycastFromCamera, raycastFromEntity } from './lib/raycast/main';
+import { addKeybind, removeKeybind, enableKeybind, isKeybindPressed } from './lib/keybind/main';
 
 exports('TriggerServerCallback', TriggerServerCallback);
 exports('RegisterClientCallback', RegisterClientCallback);
 exports('UnregisterClientCallback', UnregisterClientCallback);
 exports('IsClientCallbackRegistered', IsClientCallbackRegistered);
 
-exports('wait', wait);
 exports('waitUntil', waitUntil);
 exports('waitForPlayer', waitForPlayer);
-exports('waitForModel', waitForModel);
-exports('waitForAnimDict', waitForAnimDict);
 
-exports('CreatePrint', Print.create);
-exports('PrintSuccess', Print.success);
-exports('PrintInfo', Print.info);
-exports('PrintWarn', Print.warn);
-exports('PrintError', Print.error);
-exports('PrintDebug', Print.debug);
+exports('requestModel', requestModel);
+exports('requestAnimDict', requestAnimDict);
+exports('requestAnimSet', requestAnimSet);
+exports('requestPtfxAsset', requestPtfxAsset);
+exports('requestTextureDict', requestTextureDict);
+exports('requestWeaponAsset', requestWeaponAsset);
+exports('requestScaleformMovie', requestScaleformMovie);
+
+exports('raycastFromCoords', raycastFromCoords);
+exports('raycastFromCamera', raycastFromCamera);
+exports('raycastFromEntity', raycastFromEntity);
+
+exports('addKeybind', addKeybind);
+exports('removeKeybind', removeKeybind);
+exports('enableKeybind', enableKeybind);
+exports('isKeybindPressed', isKeybindPressed);
 
 const log = Print.create('Core');
 
