@@ -1,0 +1,42 @@
+export interface VehicleProperties {
+  model: number;
+  plate: string;
+  plateIndex: number;
+  lockState: number;
+  bodyHealth: number;
+  engineHealth: number;
+  tankHealth: number;
+  fuelLevel: number;
+  oilLevel: number;
+  dirtLevel: number;
+  paintType1: number;
+  paintType2: number;
+  color1: number | [number, number, number];
+  color2: number | [number, number, number];
+  pearlescentColor: number;
+  interiorColor: number;
+  dashboardColor: number;
+  wheelColor: number;
+  wheelWidth: number;
+  wheelSize: number;
+  wheels: number;
+  windowTint: number;
+  xenonColor: number;
+  neonEnabled: [boolean, boolean, boolean, boolean];
+  neonColor: [number, number, number];
+  extras: Record<number, boolean>;
+  tyreSmokeColor: [number, number, number];
+  livery: number;
+  roofLivery: number;
+  bulletProofTyres: boolean;
+  driftTyres: boolean;
+  mods: Record<number, number>;
+  toggleMods: Record<number, boolean>;
+  customTiresF: boolean;
+  customTiresR: boolean;
+  windows: number[];
+  doors: number[];
+  tyres: Record<number, 1 | 2>;
+}
+
+export type PartialVehicleProperties = Partial<VehicleProperties>;
