@@ -33,8 +33,10 @@ import {
   randomAngle,
   randomRadianAngle,
   randomSign,
+  randomPattern,
 } from './lib/math/random';
 import { round } from './lib/math/round';
+import { getRelativeCoords, getRelativeCoords3D } from './lib/math/coords';
 import {
   vec2ToScalars,
   vec3ToScalars,
@@ -61,6 +63,41 @@ import {
 } from './lib/math/toVector';
 import { Print } from './lib/print/main';
 import { wait, waitFor } from './lib/utils/wait';
+import {
+  tableContains,
+  tableMatches,
+  tableDeepClone,
+  tableMerge,
+  tableFreeze,
+  tableIsFrozen,
+  tableMap,
+  tableFilter,
+  tableFind,
+  tableKeys,
+  tableValues,
+  tableSize,
+} from './lib/table/main';
+import { createTimer, getTimer, getAllTimers } from './lib/timer/main';
+import { getClosestObject, getNearbyObjects } from './lib/object/main';
+import { getClosestPed, getNearbyPeds } from './lib/ped/main';
+import { getClosestVehicle, getNearbyVehicles } from './lib/vehicle/main';
+import { checkDependency } from './lib/version/main';
+import { createSpatialGrid } from './lib/spatial/grid';
+import {
+  containsZone,
+  createSphereShape,
+  createBoxShape,
+  createPolyShape,
+} from './lib/spatial/geometry';
+import {
+  addSphereZone,
+  addBoxZone,
+  addPolyZone,
+  removeZone,
+  getZoneById,
+  getZonesAtCoords,
+  getAllZones,
+} from './lib/spatial/zones';
 
 export const RESOURCE_NAME = GetCurrentResourceName();
 
@@ -100,8 +137,12 @@ exports('randomPercentage', randomPercentage);
 exports('randomAngle', randomAngle);
 exports('randomRadianAngle', randomRadianAngle);
 exports('randomSign', randomSign);
+exports('randomPattern', randomPattern);
 
 exports('round', round);
+
+exports('getRelativeCoords', getRelativeCoords);
+exports('getRelativeCoords3D', getRelativeCoords3D);
 
 exports('vec2ToScalars', vec2ToScalars);
 exports('vec3ToScalars', vec3ToScalars);
@@ -127,6 +168,47 @@ exports('vec4ToVec2', vec4ToVec2);
 
 exports('wait', wait);
 exports('waitFor', waitFor);
+
+exports('createTimer', createTimer);
+exports('getTimer', getTimer);
+exports('getAllTimers', getAllTimers);
+
+exports('tableContains', tableContains);
+exports('tableMatches', tableMatches);
+exports('tableDeepClone', tableDeepClone);
+exports('tableMerge', tableMerge);
+exports('tableFreeze', tableFreeze);
+exports('tableIsFrozen', tableIsFrozen);
+exports('tableMap', tableMap);
+exports('tableFilter', tableFilter);
+exports('tableFind', tableFind);
+exports('tableKeys', tableKeys);
+exports('tableValues', tableValues);
+exports('tableSize', tableSize);
+
+exports('checkDependency', checkDependency);
+
+exports('createSpatialGrid', createSpatialGrid);
+exports('containsZone', containsZone);
+exports('createSphereShape', createSphereShape);
+exports('createBoxShape', createBoxShape);
+exports('createPolyShape', createPolyShape);
+exports('addSphereZone', addSphereZone);
+exports('addBoxZone', addBoxZone);
+exports('addPolyZone', addPolyZone);
+exports('removeZone', removeZone);
+exports('getZoneById', getZoneById);
+exports('getZonesAtCoords', getZonesAtCoords);
+exports('getAllZones', getAllZones);
+
+exports('getClosestObject', getClosestObject);
+exports('getNearbyObjects', getNearbyObjects);
+
+exports('getClosestPed', getClosestPed);
+exports('getNearbyPeds', getNearbyPeds);
+
+exports('getClosestVehicle', getClosestVehicle);
+exports('getNearbyVehicles', getNearbyVehicles);
 
 exports('CreatePrint', Print.create);
 exports('PrintSuccess', Print.success);
