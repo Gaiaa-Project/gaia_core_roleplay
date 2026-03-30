@@ -319,3 +319,38 @@ export function randomPointOnCircleEdge(center: Vector2, radius: number): Vector
 export function randomRadianAngle(): number {
   return Math.random() * 2 * Math.PI;
 }
+
+const PATTERN_CHARS: Record<string, () => string> = {
+  '1': () => String(Math.floor(Math.random() * 10)),
+  A: () => String.fromCharCode(65 + Math.floor(Math.random() * 26)),
+  a: () => String.fromCharCode(97 + Math.floor(Math.random() * 26)),
+  '.': () =>
+    Math.random() < 0.5
+      ? String(Math.floor(Math.random() * 10))
+      : String.fromCharCode(65 + Math.floor(Math.random() * 26)),
+};
+
+export function randomPattern(pattern: string): string {
+  let result = '';
+  let escape = false;
+
+  for (let i = 0; i < pattern.length; i++) {
+    const char = pattern[i]!;
+
+    if (escape) {
+      result += char;
+      escape = false;
+      continue;
+    }
+
+    if (char === '^') {
+      escape = true;
+      continue;
+    }
+
+    const generator = PATTERN_CHARS[char];
+    result += generator ? generator() : char;
+  }
+
+  return result;
+}
