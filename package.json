@@ -1,6 +1,6 @@
 {
   "name": "gaia-core",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A modern TypeScript-first FiveM framework (client + server) built with Bun and esbuild.",
   "license": "LGPL-3.0-or-later",
   "type": "module",
