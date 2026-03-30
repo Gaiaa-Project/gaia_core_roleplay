@@ -27,6 +27,24 @@ import {
 import { createCron, removeCron } from './lib/cron/main';
 import { versionCheck } from './lib/version/main';
 import { initVehicle } from './lib/vehicle/init';
+import {
+  InitPermissions,
+  hasPermission,
+  canModify,
+  getCharacterRoles,
+  getCharacterPermissions,
+  getPrimaryRole,
+  assignRole,
+  revokeRole,
+  createRole,
+  deleteRole,
+  addPermissionToRole,
+  removePermissionFromRole,
+  getAllRoles,
+  getAllPermissions,
+  getRolePermissions,
+  getStaffOnline,
+} from './modules/permissions/main';
 import { Print } from '@/shared/lib/print/main';
 
 const log = Print.create('Core');
@@ -58,6 +76,22 @@ exports('removeCron', removeCron);
 exports('versionCheck', versionCheck);
 exports('initVehicle', initVehicle);
 
+exports('hasPermission', hasPermission);
+exports('canModify', canModify);
+exports('getCharacterRoles', getCharacterRoles);
+exports('getCharacterPermissions', getCharacterPermissions);
+exports('getPrimaryRole', getPrimaryRole);
+exports('assignRole', assignRole);
+exports('revokeRole', revokeRole);
+exports('createRole', createRole);
+exports('deleteRole', deleteRole);
+exports('addPermissionToRole', addPermissionToRole);
+exports('removePermissionFromRole', removePermissionFromRole);
+exports('getAllRoles', getAllRoles);
+exports('getAllPermissions', getAllPermissions);
+exports('getRolePermissions', getRolePermissions);
+exports('getStaffOnline', getStaffOnline);
+
 on('onServerResourceStart', async (resourceName: string) => {
   if (resourceName !== RESOURCE_NAME) return;
 
@@ -71,6 +105,12 @@ on('onServerResourceStart', async (resourceName: string) => {
     await RunMigration();
   } catch {
     log.error('Migration failed');
+  }
+
+  try {
+    await InitPermissions();
+  } catch {
+    log.error('Permission system failed to initialize');
   }
 
   log.success('Server started');

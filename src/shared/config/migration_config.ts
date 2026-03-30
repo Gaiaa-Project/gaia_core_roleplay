@@ -26,6 +26,8 @@ export const migrationConfig: MigrationConfig = {
           { name: 'license', type: 'VARCHAR(60)', notNull: true, unique: true },
           { name: 'discord_id', type: 'VARCHAR(30)', notNull: true, unique: true },
           { name: 'ip', type: 'VARCHAR(45)', notNull: true },
+          { name: 'last_played_character', type: 'INT', unsigned: true, default: null },
+          { name: 'total_playtime', type: 'INT', unsigned: true, notNull: true, default: 0 },
           {
             name: 'last_seen',
             type: 'TIMESTAMP',
@@ -37,6 +39,128 @@ export const migrationConfig: MigrationConfig = {
           { name: 'idx_license', columns: ['license'] },
           { name: 'idx_discord_id', columns: ['discord_id'] },
           { name: 'idx_last_seen', columns: ['last_seen'] },
+        ],
+      },
+      {
+        name: 'characters',
+        columns: [
+          { name: 'id', type: 'INT', autoIncrement: true, primaryKey: true, unsigned: true },
+          { name: 'user_id', type: 'INT', unsigned: true, notNull: true },
+          { name: 'ped_model', type: 'VARCHAR(60)', notNull: true },
+          { name: 'x', type: 'FLOAT', notNull: true },
+          { name: 'y', type: 'FLOAT', notNull: true },
+          { name: 'z', type: 'FLOAT', notNull: true },
+          { name: 'heading', type: 'FLOAT', notNull: true },
+          { name: 'is_dead', type: 'BOOLEAN', notNull: true, default: 0 },
+          { name: 'playtime', type: 'INT', unsigned: true, notNull: true, default: 0 },
+          {
+            name: 'last_played',
+            type: 'TIMESTAMP',
+            default: 'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+          },
+          { name: 'created_at', type: 'TIMESTAMP', default: 'CURRENT_TIMESTAMP' },
+        ],
+        indexes: [{ name: 'idx_user_id', columns: ['user_id'] }],
+        foreignKeys: [
+          {
+            column: 'user_id',
+            references: { table: 'users', column: 'id' },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
+          },
+        ],
+      },
+      {
+        name: 'roles',
+        columns: [
+          { name: 'id', type: 'INT', autoIncrement: true, primaryKey: true, unsigned: true },
+          { name: 'name', type: 'VARCHAR(50)', notNull: true, unique: true },
+          { name: 'label', type: 'VARCHAR(100)', notNull: true },
+          { name: 'is_primary', type: 'BOOLEAN', notNull: true, default: 0 },
+          { name: 'inherits_from', type: 'INT', unsigned: true, default: null },
+          { name: 'created_at', type: 'TIMESTAMP', default: 'CURRENT_TIMESTAMP' },
+        ],
+        indexes: [
+          { name: 'idx_roles_name', columns: ['name'] },
+          { name: 'idx_roles_is_primary', columns: ['is_primary'] },
+        ],
+        foreignKeys: [
+          {
+            column: 'inherits_from',
+            references: { table: 'roles', column: 'id' },
+            onDelete: 'SET NULL',
+            onUpdate: 'CASCADE',
+          },
+        ],
+      },
+      {
+        name: 'permissions',
+        columns: [
+          { name: 'id', type: 'INT', autoIncrement: true, primaryKey: true, unsigned: true },
+          { name: 'name', type: 'VARCHAR(100)', notNull: true, unique: true },
+          { name: 'description', type: 'VARCHAR(255)', default: null },
+        ],
+        indexes: [{ name: 'idx_permissions_name', columns: ['name'] }],
+      },
+      {
+        name: 'role_permissions',
+        columns: [
+          { name: 'role_id', type: 'INT', unsigned: true, notNull: true, primaryKey: true },
+          { name: 'permission_id', type: 'INT', unsigned: true, notNull: true, primaryKey: true },
+        ],
+        foreignKeys: [
+          {
+            column: 'role_id',
+            references: { table: 'roles', column: 'id' },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
+          },
+          {
+            column: 'permission_id',
+            references: { table: 'permissions', column: 'id' },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
+          },
+        ],
+      },
+      {
+        name: 'character_roles',
+        columns: [
+          { name: 'character_id', type: 'INT', unsigned: true, notNull: true, primaryKey: true },
+          { name: 'role_id', type: 'INT', unsigned: true, notNull: true, primaryKey: true },
+          { name: 'assigned_at', type: 'TIMESTAMP', default: 'CURRENT_TIMESTAMP' },
+          { name: 'expires_at', type: 'TIMESTAMP', default: null },
+        ],
+        foreignKeys: [
+          {
+            column: 'character_id',
+            references: { table: 'characters', column: 'id' },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
+          },
+          {
+            column: 'role_id',
+            references: { table: 'roles', column: 'id' },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
+          },
+        ],
+      },
+      {
+        name: 'rbac_audit_log',
+        columns: [
+          { name: 'id', type: 'INT', autoIncrement: true, primaryKey: true, unsigned: true },
+          { name: 'action', type: 'VARCHAR(50)', notNull: true },
+          { name: 'target_type', type: 'VARCHAR(50)', notNull: true },
+          { name: 'target_id', type: 'VARCHAR(100)', notNull: true },
+          { name: 'performed_by', type: 'INT', unsigned: true, default: null },
+          { name: 'details', type: 'TEXT', default: null },
+          { name: 'created_at', type: 'TIMESTAMP', default: 'CURRENT_TIMESTAMP' },
+        ],
+        indexes: [
+          { name: 'idx_audit_action', columns: ['action'] },
+          { name: 'idx_audit_target', columns: ['target_type', 'target_id'] },
+          { name: 'idx_audit_created_at', columns: ['created_at'] },
         ],
       },
     ],
