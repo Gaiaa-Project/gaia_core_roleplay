@@ -28,6 +28,13 @@ import { createCron, removeCron } from './lib/cron/main';
 import { versionCheck } from './lib/version/main';
 import { initVehicle } from './lib/vehicle/init';
 import {
+  registerCommand,
+  unregisterCommand,
+  isCommandRegistered,
+  getRegisteredCommand,
+  getAllCommands,
+} from './lib/command/main';
+import {
   InitPermissions,
   hasPermission,
   canModify,
@@ -75,6 +82,12 @@ exports('removeCron', removeCron);
 
 exports('versionCheck', versionCheck);
 exports('initVehicle', initVehicle);
+
+exports('registerCommand', registerCommand);
+exports('unregisterCommand', unregisterCommand);
+exports('isCommandRegistered', isCommandRegistered);
+exports('getRegisteredCommand', getRegisteredCommand);
+exports('getAllCommands', getAllCommands);
 
 exports('hasPermission', hasPermission);
 exports('canModify', canModify);
