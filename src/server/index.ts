@@ -20,7 +20,13 @@ import {
 } from './lib/callback/main';
 import { RunMigration } from './modules/migration/main';
 import { GetIdentifiers } from './lib/player/identifiers';
+import {
+  getClosestPlayer as getClosestPlayerServer,
+  getNearbyPlayers as getNearbyPlayersServer,
+} from './lib/player/closest';
 import { createCron, removeCron } from './lib/cron/main';
+import { versionCheck } from './lib/version/main';
+import { initVehicle } from './lib/vehicle/init';
 import { Print } from '@/shared/lib/print/main';
 
 const log = Print.create('Core');
@@ -43,9 +49,14 @@ exports('UnregisterServerCallback', UnregisterServerCallback);
 exports('IsServerCallbackRegistered', IsServerCallbackRegistered);
 
 exports('GetIdentifiers', GetIdentifiers);
+exports('getClosestPlayer', getClosestPlayerServer);
+exports('getNearbyPlayers', getNearbyPlayersServer);
 
 exports('createCron', createCron);
 exports('removeCron', removeCron);
+
+exports('versionCheck', versionCheck);
+exports('initVehicle', initVehicle);
 
 on('onServerResourceStart', async (resourceName: string) => {
   if (resourceName !== RESOURCE_NAME) return;
