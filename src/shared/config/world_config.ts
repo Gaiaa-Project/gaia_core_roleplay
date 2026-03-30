@@ -1,17 +1,51 @@
 export const WorldConfig = {
+  // Removes the GTA wanted level system entirely (stars, police chases)
+  // Recommended: true for RP servers where police is player-controlled
   disableWantedLevel: true,
+
+  // Disables automatic health regeneration over time
+  // Recommended: true for RP to force players to use medkits/hospitals
   disableHealthRegeneration: true,
+
+  // Forces free aim mode (no auto-lock on targets)
+  // Recommended: true for RP for fair gunplay
   disableAimAssist: true,
+
+  // Disables all GTA dispatch services (police, ambulance, fire trucks responding to events)
+  // Recommended: true for RP where emergency services are player-controlled
   disableDispatchServices: true,
+
+  // Prevents NPCs from dropping weapons when killed
+  // Recommended: true to avoid free weapon pickups everywhere
   disableNPCDrops: true,
+
+  // Prevents automatic seat shuffle (passenger sliding to driver seat)
+  // Recommended: true so passengers stay in their seat
   disableSeatShuffle: true,
+
+  // Disables GTA vehicle rewards (bonus for stealing/destroying vehicles)
+  // Must run every frame — only active if set to true
   disableVehicleRewards: true,
+
+  // Hides the ammo counter display
+  // Must run every frame — only active if set to true
   disableDisplayAmmo: true,
+
+  // Prevents the idle camera from activating when AFK
+  // Must run every frame — only active if set to true
   disableIdleCamera: true,
+
+  // Turns off vehicle radio when entering a vehicle
+  // Also disables player radio control
   disableRadioOnEnter: true,
 
+  // Enables friendly fire (PvP) — players can damage each other
+  // Recommended: true for RP
   enablePvP: true,
 
+  // Toggle individual HUD components on/off
+  // Set to true to REMOVE the component from the screen
+  // Index corresponds to the GTA HUD component ID
   removeHudComponents: [
     false, // 1 - WANTED_STARS
     false, // 2 - WEAPON_ICON
@@ -37,7 +71,12 @@ export const WorldConfig = {
     false, // 22 - HUD_WEAPONS
   ] as boolean[],
 
+  // Disables NPC vehicle scenarios (police patrols, ambulances, random traffic events)
+  // Reduces ambient AI activity for cleaner RP environment
   disableScenarios: true,
+
+  // List of GTA scenario types to disable when disableScenarios is true
+  // Remove entries from this list to keep specific scenarios active
   scenarios: [
     'WORLD_VEHICLE_ATTRACTOR',
     'WORLD_VEHICLE_AMBULANCE',
@@ -91,25 +130,47 @@ export const WorldConfig = {
     'WORLD_HUMAN_PAPARAZZI',
   ] as string[],
 
+  // World density multipliers — controls how many NPCs and vehicles spawn
+  // Range: 0.0 (none) to 1.0 (default GTA density)
+  // Lower values = less NPCs/vehicles = better performance + cleaner RP
   density: {
+    // Pedestrian density (NPCs walking around)
     pedDensity: 0.8,
+    // Scenario ped density inside interiors
     scenarioPedDensityInterior: 0.5,
+    // Scenario ped density outside
     scenarioPedDensityExterior: 0.5,
+    // Range at which ambient vehicles spawn
     ambientVehicleRange: 0.8,
+    // Density of parked vehicles (street parking)
     parkedVehicleDensity: 0.8,
+    // Density of randomly spawned driving vehicles
     randomVehicleDensity: 0.8,
+    // Overall vehicle density multiplier
     vehicleDensity: 0.8,
   },
 
+  // Pattern for AI-generated license plates
+  // Each '.' generates a random alphanumeric character
+  // Use 'A' for letters, '1' for digits, or literal characters
   customAIPlates: '........',
 
+  // Discord Rich Presence configuration
+  // Shows server info in the player's Discord status
   discord: {
+    // Enable or disable Discord Rich Presence
     enabled: false,
+    // Your Discord Application ID (from https://discord.com/developers/applications)
     appId: '',
+    // Presence text — supports placeholders: {server_name}, {server_players}, {server_maxplayers}, {player_name}, {player_id}, {player_street}
     presence: 'Playing on {server_name}',
+    // Large image asset name (uploaded in Discord Developer Portal)
     assetName: '',
+    // Hover text for the large image — supports same placeholders
     assetText: '{server_name}',
+    // Clickable buttons (max 2) — label + URL
     buttons: [] as { label: string; url: string }[],
+    // How often (ms) to refresh the presence — 60000 = 1 minute
     refreshInterval: 60000,
   },
 };
