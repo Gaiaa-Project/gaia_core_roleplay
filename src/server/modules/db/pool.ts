@@ -7,12 +7,6 @@ const log = Print.create('Database');
 
 let pool: Pool | null = null;
 
-export function CreatePool(): Pool {
-  const config = ParseConnectionString();
-  pool = mariaCreatePool(config);
-  return pool;
-}
-
 export function GetPool(): Pool {
   if (!pool) {
     throw new Error('Database pool is not initialized. Call InitializeDatabase() first.');

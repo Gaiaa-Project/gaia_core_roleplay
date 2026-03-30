@@ -1,6 +1,15 @@
 import type { ColumnDefinition, ForeignKeyDefinition, TableDefinition } from './types';
 
+const IDENTIFIER_REGEX = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
+
+function validateIdentifier(value: string, type: string): void {
+  if (!IDENTIFIER_REGEX.test(value)) {
+    throw new Error(`invalid ${type} identifier: '${value}'`);
+  }
+}
+
 function generateColumnSQL(col: ColumnDefinition): string {
+  validateIdentifier(col.name, 'column');
   const parts: string[] = [`\`${col.name}\``, col.type];
 
   if (col.unsigned) parts.push('UNSIGNED');
@@ -27,6 +36,7 @@ function generateColumnSQL(col: ColumnDefinition): string {
 }
 
 export function generateCreateTableSQL(table: TableDefinition): string {
+  validateIdentifier(table.name, 'table');
   const lines: string[] = [];
 
   for (const col of table.columns) {
@@ -50,10 +60,15 @@ export function generateCreateTableSQL(table: TableDefinition): string {
 }
 
 export function generateAddColumnSQL(tableName: string, col: ColumnDefinition): string {
+  validateIdentifier(tableName, 'table');
   return `ALTER TABLE \`${tableName}\` ADD COLUMN ${generateColumnSQL(col)}`;
 }
 
 export function generateAddForeignKeySQL(tableName: string, fk: ForeignKeyDefinition): string {
+  validateIdentifier(tableName, 'table');
+  validateIdentifier(fk.column, 'column');
+  validateIdentifier(fk.references.table, 'table');
+  validateIdentifier(fk.references.column, 'column');
   const constraintName = `fk_${tableName}_${fk.column}`;
   let sql = `ALTER TABLE \`${tableName}\` ADD CONSTRAINT \`${constraintName}\` FOREIGN KEY (\`${fk.column}\`) REFERENCES \`${fk.references.table}\`(\`${fk.references.column}\`)`;
   if (fk.onDelete) sql += ` ON DELETE ${fk.onDelete}`;
