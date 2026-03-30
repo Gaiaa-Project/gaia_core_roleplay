@@ -19,24 +19,24 @@
     "check": "bun run format && bun run typecheck && bun run lint"
   },
   "devDependencies": {
-    "@citizenfx/client": "^2.0.25988-1",
-    "@citizenfx/server": "^2.0.25988-1",
+    "@citizenfx/client": "^2.0.27547-1",
+    "@citizenfx/server": "^2.0.27547-1",
     "@eslint/js": "^10.0.1",
     "@types/bun": "latest",
-    "@types/node": "^25.3.0",
-    "@typescript-eslint/eslint-plugin": "^8.53.0",
-    "@typescript-eslint/parser": "^8.53.0",
-    "esbuild": "^0.27.3",
-    "eslint": "^10.0.1",
+    "@types/node": "^25.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.57.2",
+    "@typescript-eslint/parser": "^8.57.2",
+    "esbuild": "^0.27.4",
+    "eslint": "^10.1.0",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.8.1",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.0"
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.57.2"
   },
   "dependencies": {
-    "@nativewrappers/fivem": "^0.0.144",
-    "@nativewrappers/server": "^0.0.144",
-    "mariadb": "^3.4.5"
+    "@nativewrappers/fivem": "^0.0.166",
+    "@nativewrappers/server": "^0.0.166",
+    "mariadb": "^3.5.2"
   },
   "engines": {
     "node": ">=22.9.0"
