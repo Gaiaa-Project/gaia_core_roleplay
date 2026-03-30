@@ -18,7 +18,7 @@ const manifest: ManifestConfig = {
   name: 'Gaia Core',
   author: 'Gaia Project',
   description: 'Gaia Core Roleplay - Framework RP',
-  version: '0.0.1',
+  version: '0.1.0',
   nodeVersion: '22',
   dependencies: [],
 };
