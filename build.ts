@@ -97,6 +97,10 @@ version '${manifest.version}'
 
 node_version '${manifest.nodeVersion}'
 
+shared_scripts {
+  'gaia.lua'
+}
+
 client_scripts {
   '${clientFile}'
 }
