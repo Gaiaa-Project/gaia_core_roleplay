@@ -18,3 +18,4 @@ logs
 
 .idea
 .DS_Store
+bun.lock

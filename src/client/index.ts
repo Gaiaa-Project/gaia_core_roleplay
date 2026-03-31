@@ -53,6 +53,7 @@ import {
 import { getVehicleProperties, setVehicleProperties } from './lib/vehicle/properties';
 import './lib/vehicle/init';
 import './modules/world_adjustments';
+import './modules/temp_spawn';
 
 exports('TriggerServerCallback', TriggerServerCallback);
 exports('RegisterClientCallback', RegisterClientCallback);
