@@ -49,7 +49,8 @@ const commonConfig: BuildOptions = {
   target: 'es2023',
   logLevel: 'info',
   sourcemap: !isProd,
-  minify: isProd,
+  minifySyntax: isProd,
+  minifyWhitespace: isProd,
   drop: isProd ? ['console'] : undefined,
   plugins: [aliasPlugin],
   define: {
